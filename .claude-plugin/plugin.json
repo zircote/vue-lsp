@@ -1,6 +1,6 @@
 {
   "name": "vue-lsp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Vue language server plugin for Claude Code with Volar integration and automated hooks for linting and formatting",
   "author": {
     "name": "zircote",

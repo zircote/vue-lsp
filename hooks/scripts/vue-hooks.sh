@@ -1,6 +1,6 @@
 #!/bin/bash
 # Vue development hooks for Claude Code
-# Handles: linting, formatting
+# Fast-only hooks - heavy commands shown as hints
 
 set -o pipefail
 
@@ -14,23 +14,21 @@ ext="${file_path##*.}"
 
 case "$ext" in
     vue)
-        # Prettier formatting
+        # Prettier formatting (fast - single file)
         if command -v prettier >/dev/null 2>&1; then
             prettier --write "$file_path" 2>/dev/null || true
         fi
 
-        # ESLint (linting)
+        # ESLint auto-fix (fast - single file)
         if command -v eslint >/dev/null 2>&1; then
             eslint --fix "$file_path" 2>/dev/null || true
         fi
 
-        # Vue type checking
-        if command -v vue-tsc >/dev/null 2>&1; then
-            vue-tsc --noEmit 2>/dev/null || true
-        fi
-
-        # Surface TODO/FIXME comments
+        # TODO/FIXME check (fast - grep only)
         grep -n -E '(TODO|FIXME|HACK|XXX|BUG):' "$file_path" 2>/dev/null || true
+
+        # Hints for on-demand commands
+        echo "💡 vue-tsc --noEmit && npm test"
         ;;
 esac
 
